@@ -1,0 +1,168 @@
+﻿@model LocalWise.Models.Guia
+
+@{
+    ViewBag.Title = "Passeios";
+    Layout = null;
+}
+
+@Styles.Render("~/Content/css")
+@Styles.Render("~/Content/Dashboard.css")
+@Styles.Render("~/Content/bootstrap.css")
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<body>
+
+    <div class="col-sm-10" style="margin-top:200px;">
+        <div style="margin-left:500px;"><p><h1>Pedidos de passeios</h1></p></div>
+        @foreach (var item in Model.Pedido)
+        {
+            <div style="margin-left:500px;">
+                <div style="border-radius:10px; padding-right:20px; padding-left:20px;margin:5px; background-color:rgb(202 202 202)">
+                    <div class="col-12 row">
+                        <div class="col-md-6 row">
+
+                            @if (item.Turista.Foto == null)
+                            {
+                                <div><img src="~/img/user-icon.png" style="max-width:100px;" class="rounded-circle mt-3 mb-3" /></div>
+                            }
+                            else
+                            {
+                                <div><img src="~/Upload/@item.Turista.Foto" style="max-width:100px;" class="rounded-circle mt-3 mb-3" /></div>
+                            }
+
+                            <div style="margin-left:30px;margin-top:50px;">@item.Turista.Nome</div>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            @if (item.Status == 0)
+                            {
+                                <label id="status_@item.Id"></label>
+                                <a href="#" name="aceitar_@item.Id" id="aceitar_@item.Id" rel="@item.Id" class="btn aceitar p-3"><b>Aceitar</b></a>
+                                <a href="#" name="recusar_@item.Id" id="recusar_@item.Id" rel="@item.Id" class="btn recusar p-3"><b>Recusar</b></a>
+                            }
+                            else if (item.Status == 1)
+                            {
+                                <label class="text-success" style="margin-left:30px;margin-top:50px;font-size:20px;"><b>Passeio Aceito</b></label>
+                            }
+                            else
+                            {
+                                <label class="text-danger" style="margin-left:30px;margin-top:50px;font-size:20px;"><b>Passeio Recusado</b></label>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div id="menu" class="menu effect">
+        <div class="col-12 text-center">
+
+            @if (Model.Foto == null)
+            {
+                <a href="~/Guia/Create" style="text-decoration:none">
+                    <img src="~/img/user-icon.png" style="max-width:200px;" class="rounded-circle mt-3 mb-3" />
+                </a>
+            }
+            else
+            {
+                <a href="~/Guia/Create" style="text-decoration:none">
+                    <img src="~/Upload/@Model.Foto?@DateTime.Now.ToString("yyyyMMddHHmmss")" style="max-width:200px;" class="rounded-circle mt-3 mb-3" />
+                </a>
+            }
+
+        </div>
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+
+                <h3>@Model.Nome</h3>
+
+            </div>
+        </div>
+        <!--AVALIAÇÕES-->
+        <div class="col-12 row avaliacao">
+            <div class="col-10">
+                <a href="javascript:void(0)" onclick="Avaliar(1)">
+                    <img src="../../img/avaliacao/star0.png" id="s1" class="star">
+                </a>
+
+                <a href="javascript:void(0)" onclick="Avaliar(2)">
+                    <img src="../../img/avaliacao/star0.png" id="s2" class="star">
+                </a>
+
+                <a href="javascript:void(0)" onclick="Avaliar(3)">
+                    <img src="../../img/avaliacao/star0.png" id="s3" class="star">
+                </a>
+
+                <a href="javascript:void(0)" onclick="Avaliar(4)">
+                    <img src="../../img/avaliacao/star0.png" id="s4" class="star">
+                </a>
+
+                <a href="javascript:void(0)" onclick="Avaliar(5)">
+                    <img src="../../img/avaliacao/star0.png" id="s5" class="star">
+                </a>
+            </div>
+            <div class="col-2 mt-1">
+                <p id="rating">0</p>
+            </div>
+        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            if (User.Identity.Name.Split('|')[0] == Model.Id.ToString())
+            {
+                <ul>
+                    <li><a href="~/Guia/Pontos">Pontos turísticos</a></li>
+                    <li><a href="~/Guia/Passeios">Passeios</a></li>
+                    <li><a href="~/Guia/Sair">Sair</a></li>
+                </ul>
+            }
+        }
+    </div>
+</body>
+
+<script src="~/Scripts/jquery-3.6.1.min.js"></script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    $(".aceitar").click(function () {
+        var id = $(this).attr("rel");
+        $.ajax({
+            type: 'POST',
+            url: '/Guia/Aceitar/',
+            data: JSON.stringify({ id: id }),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (r) {
+                if (r === "") {
+                    alert("ERROR 404");
+                } else if (r === "OK") {
+                    $("#status_" + id).text("Passeio Aceito").addClass("text-success");
+                    $("#aceitar_" + id).css("visibility", "hidden");
+                    $("#recusar_" + id).css("visibility", "hidden");
+                } else {
+                }
+            }
+        });
+    });
+
+    $(".recusar").click(function () {
+        var id = $(this).attr("rel");
+        $.ajax({
+            type: 'POST',
+            url: '/Guia/Recusar/',
+            data: JSON.stringify({ id: id }),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (r) {
+                if (r === "") {
+                    alert("ERROR 404");
+                } else if (r === "OK") {
+                    $("#status_" + id).text("Passeio Recusado").addClass("text-danger");
+                    $("#aceitar_" + id).css("visibility", "hidden");
+                    $("#recusar_" + id).css("visibility", "hidden");
+                } else {
+                }
+            }
+        });
+    });
+</script>

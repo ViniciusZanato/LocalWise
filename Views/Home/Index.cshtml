@@ -1,0 +1,252 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+@Styles.Render("~/Content/css")
+@Styles.Render("~/Content/bootstrap.css")
+@Styles.Render("~/Content/Index.css")
+@Styles.Render("~/Content/Style.css")
+
+<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<nav class="navbar">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-6">
+                <div id="title">
+                    <a href="~/Home/Index"><img src="../../img/logo/logo-escrita3.png" alt="Alternate Text" class="logoImg mt-2" /></a>
+                </div>
+            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="col-6 text-right" style="color:black">
+                    <b>Olá, @User.Identity.Name.Split('|')[1]</b>
+                    <i class="fa-solid fa-user" style="font-size:25px; color:black; padding-top:10px; margin-left:10px;"></i>
+                    <div class="btn-group">
+                        <i class="seta fa-solid fa-caret-down" data-toggle="dropdown">
+                        </i>
+                        <div class="dropdown-menu dropdown-menu-right text-center">
+                            <a class="dropdown-item" href="~/Turista/DashBoard">Minha Conta</a>
+                            <a class="dropdown-item" href="~/Turista/Sair">Sair</a>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-6 text-right">
+                    <a href="~/Turista/Acesso">
+                        <i class="fa-sharp fa-solid fa-right-to-bracket" style="font-size:25px; color:black; padding-top:10px;"></i>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</nav>
+<form method="post" action="~/Home/Index/">
+    <div class="col-12">
+        <div class="contentContainer">
+            <section class="left">
+                <div class="inputContainer">
+                    <ul>
+                        <li>
+                            <div class="form-group">
+                                <label for="escolhaLocal">Para qual cidade vamos hoje?</label>
+                                <select name="escolhaLocal" id="escolhaLocal" class="campos">
+                                    <option value="0">Escolha Uma Opção</option>
+                                    <option value="Aparecida">Aparecida</option>
+                                    <option value="Lorena">Lorena</option>
+                                    <option value="Guaratinguetá">Guaratinguetá</option>
+                                    <option value="São Paulo">São Paulo</option>
+                                    <option value="São José">São José</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <div id="contentPessoas" class="form-group ocultar">
+                                <label for="qtdPessoas">Quantas Pessoas Vão?</label>
+                                <input id="qtdPessoas" name="qtdPessoas" type="number" class="form-control teste" />
+                            </div>
+                        </li>
+                        <li>
+                            <div id="contentTransporte" class="form-group ocultar">
+                                <label for="transporte">Qual a Forma de Transporte?</label>
+                                <select ID="transporte" name="transporte" ClientIDMode="Static" runat="server" CssClass="form-control" class="campos">
+                                    <option Value="0">Escolha Uma Opção</option>
+                                    <option value="Carro">Carro</option>
+                                    <option Value="Micro-onibus">Micro-ônibus</option>
+                                    <option Value="Ônibus">Onibus</option>
+                                    <option Value="Rolê a pé">Rolê a pé</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <div id="contentTipoPasseio" class="form-group ocultar">
+                                <label for="Passeio">Qual o Tipo de Passeio?</label>
+                                <select ID="tipoPasseio" name="tipoPasseio" ClientIDMode="Static" runat="server" CssClass="form-control" class="campos">
+                                    <option Value="0">Escolha Uma Opção</option>
+                                    <option Value="Religioso">Religioso</option>
+                                    <option Value="Ambiental">Ambiental</option>
+                                    <option Value="Cultural">Cultural</option>
+                                    <option Value="Recreativo">Recreativo</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <div id="contentData" class="form-group ocultar">
+                                <label for="data">Quando Vamos?</label>
+                                <input type="date" id="data" name="dia" min="0" class="campos" />
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div id="contentSubmit" class="ocultar mt-5 text-center">
+                        <button class="btn my-2 my-sm-0 mr-3 confirma" id="" type="submit">Confirmar</button>
+                        <div class="msg"></div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="right">
+
+                @if (ViewBag.Guia != null)
+                {
+                    <div>
+                        <p style="font-size:30px; margin-left:10px;">Guias encontrados na região</p>
+                    </div>
+                    foreach (var guia in ViewBag.Guia)
+                    {
+                        <a href="~/Guia/Pontos/@guia.Id" style="text-decoration:none; color:black">
+
+                            <div style="border-radius:10px; padding-right:20px; padding-left:20px;margin:5px;" class="guias">
+                                <div class="row">
+                                    @if (guia.Foto == null)
+                                    {
+                                        <div><img src="~/img/user-icon.png" style="max-width:100px;" class="rounded-circle mt-3 mb-3" /></div>
+                                    }
+                                    else
+                                    {
+                                        <div><img src="~/Upload/@guia.Foto" style="max-width:100px;" class="rounded-circle mt-3 mb-3" /></div>
+                                    }
+
+                                    <div class="ml-3 mt-4">
+                                        <h3>@guia.Nome</h3>
+                                        <div class="col-12 row avaliacao">
+                                            <div>
+                                                <a href="javascript:void(0)" onclick="Avaliar(1)">
+                                                    <img src="../../img/avaliacao/star0.png" id="s1" class="star">
+                                                </a>
+
+                                                <a href="javascript:void(0)" onclick="Avaliar(2)">
+                                                    <img src="../../img/avaliacao/star0.png" id="s2" class="star">
+                                                </a>
+
+                                                <a href="javascript:void(0)" onclick="Avaliar(3)">
+                                                    <img src="../../img/avaliacao/star0.png" id="s3" class="star">
+                                                </a>
+
+                                                <a href="javascript:void(0)" onclick="Avaliar(4)">
+                                                    <img src="../../img/avaliacao/star0.png" id="s4" class="star">
+                                                </a>
+
+                                                <a href="javascript:void(0)" onclick="Avaliar(5)">
+                                                    <img src="../../img/avaliacao/star0.png" id="s5" class="star">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                }
+                else
+                {
+                    <div id="mapContainer"></div>
+                    <div class="text-right mt-5" style="margin-right:150px;">
+                        <a href="~/Msg/MsgGuia" title="Cancelar" class="btn col-6 p-3" id="botao" style="width:200px">Sou um guia turístico</a>
+                    </div>
+                }
+            </section>
+
+        </div>
+    </div>
+</form>
+
+<!--
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-sm-6" style="padding-left:100px">
+            <div class="card">
+                <div class="card-body">
+                    <a href="~/Turista/Acesso">
+                        <img src="../../img/cards/Turista.png" alt="Alternate Text" class="cards img-fluid" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6" style="padding-right:100px">
+            <div class="card">
+                <div class="card-body">
+                    <a href="~/Msg/MsgGuia">
+                        <img src="../../img/cards/Guia.png" alt="Alternate Text" class="cards img-fluid" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+
+<div class="col-12 container p-5">
+    <div class="col-12 text-center" style="font-size:35px;">
+        <p><b>Principais Pontos Turísticos Brasileiros</b></p>
+    </div>
+    <hr />
+    <div class="card-group col-12 row">
+        <div class="card col-md-4 col-sm-12 m-5" style="border-radius:10px;">
+            <img src="../../img/pontosTuristicos/1.jpg" alt="Avatar" style="width:100%">
+            <div class="card-title" style="font-size:25px;">
+                <p><b>Lençóis Maranhenses</b></p>
+            </div>
+            <p class="text-left p-3" style="font-size:20px;">O Parque Nacional dos Lençóis Maranhenses é uma área protegida na costa atlântica norte do Brasil. É conhecido pela sua vasta paisagem desértica de grandes dunas de areia branca e pelas lagoas sazonais de água da chuva. A Lagoa Azul e a Lagoa Bonita são duas das maiores lagoas. O ecossistema diversificado do parque inclui pântanos de mangais. As cidades vizinhas de Barreirinhas e Santo Amaro do Maranhão servem de porta de entrada para o parque</p>
+        </div>
+        <div class="card col-md-4 col-sm-12 m-5" style="border-radius:10px;">
+            <img src="../../img/pontosTuristicos/2.jpg" alt="Avatar" style="width:100%">
+            <div class="card-title" style="font-size:25px;">
+                <p><b>Cristo Redentor</b></p>
+            </div>
+            <p class="text-left p-3" style="font-size:20px;">Cristo Redentor é uma estátua art déco que retrata Jesus Cristo, localizada no topo do morro do Corcovado, a 709 metros acima do nível do mar, com vista para parte considerável da cidade brasileira do Rio de Janeiro. Feito de concreto armado e pedra-sabão, tem trinta metros de altura (uma das maiores estátuas do mundo), sem contar os oito metros do pedestal. Seus braços se esticam por 28 metros de largura e a estrutura pesa 1145 toneladas.</p>
+        </div>
+        <div class="card col-md-4 col-sm-12 m-5" style="border-radius:10px;">
+            <img src="../../img/pontosTuristicos/3.jpg" alt="Avatar" style="width:100%">
+            <div class="card-title" style="font-size:25px;">
+                <p><b>Cataratas Do Iguaçu</b></p>
+            </div>
+            <p class="text-left p-3" style="font-size:20px;">
+                Já imaginou apreciar a vista espetacular das Cataratas do Iguaçu;
+                uma das paisagens mais belas do mundo; em um ambiente onde
+                o ar puro da floresta se confunde com aromas suaves
+                de uma cozinha muito especial?
+
+                Esse lugar existe e está localizado no Parque Nacional do Iguaçu,
+                às margens do Rio Iguaçu, proporcionando vista única da parte
+                superior das famosas Cataratas.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" defer type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-core-legacy.js" defer type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" defer type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-service-legacy.js" defer type="text/javascript" charset="utf-8"></script>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")

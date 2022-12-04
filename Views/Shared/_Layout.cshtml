@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Layout</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/Style.css")
+    @Styles.Render("~/Content/bootstrap.css")
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-6">
+                    <div id="title">
+                        <a href="../Home/Index"><img src="../../img/logo/logo-escrita3.png" alt="Alternate Text" class="logoImg mt-2" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    @RenderBody()
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

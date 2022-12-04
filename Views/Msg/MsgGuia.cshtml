@@ -1,0 +1,118 @@
+﻿
+@{
+    ViewBag.Title = "Aba do guia";
+    Layout = null;
+}
+
+@Styles.Render("~/Content/css")
+@Styles.Render("~/Content/Style.css")
+@Styles.Render("~/Content/bootstrap.css")
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+<script src="~/Scripts/jquery-3.6.1.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<nav class="navbar">
+    <div id="title">
+        <a href="../Home/Index"><img src="../../img/logo/logo-escrita3.png" alt="Alternate Text" class="logoImg mt-2" /></a>
+    </div>
+</nav>
+
+<div class="col-md-12">
+    <div class="col-6 text-left">
+        <a href="~/Home/Index">
+            <i class="fa-solid fa-arrow-left" style="font-size:25px; color:black; padding-top:20px;"></i>
+        </a>
+    </div>
+</div>
+
+<body>
+    <div class="container p-4 col-10 mb-5" style="margin-top:-0.10px">
+        <h2 class="mb-5">Perguntas frequentes</h2>
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Por que ser um guia no LocalWise?</a>
+                    </h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Com o LocalWise você pode fazer o seu horário e cobrar o preço que achar justo, além de benefícios se bem avaliado, você tem a possibilidade de conquistar uma clientela fiel e que indique novos clientes.
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Do que preciso pra me cadastrar?</a>
+                    </h4>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        O cadastro é simples, você irá preencher um campo com Nome, CPF, Data de Nascimento, E-mail e Criar uma Senha.
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Realizei o meu Cadastro, já posso começar a trabalhar no LocalWise?</a>
+                    </h4>
+                </div>
+                <div id="collapse3" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Após a realização do cadastro, seu perfil irá para análise de um gerente local, se aprovado, você receberá um e-mail com todas as informações necessárias para fazer parte da equipe de Guias do WebAplicativo.
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">Fui aprovado, qual o próximo passo?</a>
+                    </h4>
+                </div>
+                <div id="collapse4" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Depois de ser aprovado e estar com todas as documentações corretas, você poderá fazer login com o e-mail e senha que inseriu na hora do pré-cadastro. Seu perfil irá aparecer para que você possa editá-lo e inserir seu itinerário.
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">O ponto turístico é aprovado de forma imediata? Eu posso inserir e já começar a trabalhar?</a>
+                    </h4>
+                </div>
+                <div id="collapse5" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        O ponto turístico também requer aprovação do gerente Local, para uma melhor apresentação para o turista.
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse6">Qual porcentagem de taxa será cobrado do preço que cobrei para a realização do passeio?</a>
+                    </h4>
+                </div>
+                <div id="collapse6" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Uma taxa de 5% será cobrada sobre o valor total do passeio realizado pelo guia.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <a href="~/Guia/Acesso" title="Cancelar" class="btn col-6 p-3" id="botao">Vamos Lá</a>
+        </div>
+    </div>
+</body>

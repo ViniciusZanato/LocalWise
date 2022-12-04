@@ -1,0 +1,200 @@
+﻿@model IEnumerable<LocalWise.Models.PontosGuias>
+
+@{
+    ViewBag.Title = "Pontos";
+
+    Layout = null;
+}
+
+@Styles.Render("~/Content/css")
+@Styles.Render("~/Content/Dashboard.css")
+@Styles.Render("~/Content/bootstrap.css")
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<body>
+    <div class="pontos col-sm-6">
+        <h2>Meus pontos turísticos</h2>
+        @{ var guia = new LocalWise.Models.Guia(); }
+        @if (Model.ToList().Count == 0)
+        {
+            guia = ViewBag.Guia;
+        }
+        else
+        {
+            guia = Model.FirstOrDefault().Gui;
+        }
+        @if (User.Identity.IsAuthenticated && guia != null)
+        {
+            if (User.Identity.Name.Split('|')[3] == "2")
+            {
+                string guiaId = User.Identity.Name.Split('|')[0].ToString();
+                if (guia.Id.ToString() == guiaId)
+                {
+                    <p>
+                        @Html.ActionLink("Cadastrar novo ponto", "CreatePontos")
+                    </p>
+                }
+            }
+        }
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PontosTuristicos.Foto)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.PontosTuristicos.Tipo)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.PontosTuristicos.Nome)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.PontosTuristicos.Descricao)
+                </th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="~/Upload/@item.PontosTuristicos.Foto" style="max-width:100px; border-radius:10px;" class="mt-3 mb-3" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PontosTuristicos.Tipo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PontosTuristicos.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PontosTuristicos.Descricao)
+                    </td>
+                    @if (User.Identity.IsAuthenticated && guia != null)
+                    {
+                        if (User.Identity.Name.Split('|')[3] == "2")
+                        {
+                            string guiaId = User.Identity.Name.Split('|')[0].ToString();
+                            if (guia.Id.ToString() == guiaId)
+                            {
+                                <td>
+                                    @Html.ActionLink("Editar", "EditPonto", new { id = item.PontosTuristicos.Id }) |
+                                    @Html.ActionLink("Deletar", "Delete", new { id = item.PontosTuristicos.Id })
+                                </td>
+                            }
+                        }
+                    }
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div id="menu" class="menu effect">
+        <div class="col-12 text-center">
+            @if (guia.Foto == null)
+            {
+                <a href="~/Guia/Create" style="text-decoration:none">
+                    <img src="~/img/user-icon.png" style="max-width:200px;" class="rounded-circle mt-3 mb-3" />
+                </a>
+            }
+            else
+            {
+                <a href="~/Guia/Create" style="text-decoration:none">
+                    <img src="~/Upload/@guia.Foto?@DateTime.Now.ToString("yyyyMMddHHmmss")" style="max-width:200px;" class="rounded-circle mt-3 mb-3" />
+                </a>
+            }
+
+        </div>
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h3>@guia.Nome</h3>
+                <h5>Preço passeio: R$@guia.Preco</h5>
+            </div>
+        </div>
+        <!--AVALIAÇÕES-->
+        <div class="col-12 row avaliacao">
+        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            if (User.Identity.Name.Split('|')[0] == guia.Id.ToString())
+            {
+                <ul>
+                    <li><a href="~/Guia/Pontos">Pontos turísticos</a></li>
+                    <li><a href="~/Guia/Passeios">Passeios</a></li>
+                    <li><a href="~/Guia/Sair">Sair</a></li>
+                </ul>
+            }
+            else
+            {
+                <div class="modal" id="modalPasseio">
+                    <div class="content">
+                        <p class="text">Passeio Solicitado Com Sucesso</p>
+                        <img src="../../img/gifs/gif.gif" alt="Alternate Text" style="width:400px; height:300px;" />
+                        <a href="~/Home/Index"  class="btn solicitar p-3 modalBtn" style="width: 200px; margin-top: 30px; font-size:17px;"><b>Voltar</b></a>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    @if (ViewBag.Dados != null)
+                    {
+                        <p><h5>Local do passeio</h5></p>
+                        <p id="local">@ViewBag.Dados.Cidade</p>
+                        <p><h5>Quantidade de pessoas</h5></p>
+                        <p id="qtde">@ViewBag.Dados.QtdPessoas</p>
+                        <p><h5>Locomoção</h5></p>
+                        <p id="trans">@ViewBag.Dados.Locomocao</p>
+                        <p><h5>Tipo de passeio</h5></p>
+                        <p id="tipo">@ViewBag.Dados.Tipo</p>
+                        <p><h5>Data do passeio</h5></p>
+                        <p id="data">@ViewBag.Dados.Data</p>
+                    }
+                    <a href="javascript:salvar();" title="Salvar" class="btn solicitar p-3" style="width: 200px; margin-top: 30px; font-size:17px;"><b>Solicitar passeio</b></a>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="modal">
+                <div class="content">
+                    <p class="text">Entre com sua conta para solicitar um passeio</p>
+                    <a href="~/Turista/Acesso/?url=@guia.Id" title="Cancelar" class="text-center" id="botao" style="width: 200px; margin-top: 30px; font-size:17px;"><b>Entrar</b></a>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <a href="#" title="Cancelar" class="btn solicitar p-3 modalBtn" id="solicitar" style="width: 200px; margin-top: 30px; font-size:17px;"><b>Solicitar passeio</b></a>
+            </div>
+        }
+    </div>
+
+</body>
+<script src="~/Scripts/jquery-3.6.1.min.js"></script>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/bootstrap")
+
+<script>
+    function salvar() {
+        var dados = {};
+        dados.local = $("#local").text();
+        dados.qtde = parseInt($("#qtde").text());
+        dados.transporte = $("#trans").text();
+        dados.tipoPasseio = $("#tipo").text();
+        dados.dia = $("#data").text();
+        dados.guia = @guia.Id;
+        $.ajax({
+            type: 'POST',
+            url: '/Guia/Pedido/',
+            data: JSON.stringify(dados),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (r) {
+                if (r === "") {
+                    alert("ERROR 404");
+                } else if (r === "OK") {
+                    $("#modalPasseio").toggle();
+                } else {
+                }
+            }
+        });
+    }
+</script>

@@ -1,0 +1,100 @@
+﻿@model LocalWise.Models.Guia
+
+@{
+    ViewBag.Title = "Editar Foto";
+
+    Layout = null;
+}
+
+@Styles.Render("~/Content/css")
+@Styles.Render("~/Content/Dashboard.css")
+@Styles.Render("~/Content/bootstrap.css")
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<body>
+    <div class="pontos col-md-6">
+        <h2>Editar imagem de perfil</h2>
+        @{ var guia = new LocalWise.Models.Guia(); }
+        @using (Html.BeginForm("Create", "Guia", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Foto, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <input name="arquivo" class="form-control" type="file" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Salvar" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div id="menu" class="menu effect">
+        <div class="col-12 text-center">
+
+            @if (guia.Foto == null)
+            {
+                <a href="~/Guia/Create" style="text-decoration:none">
+                    <img src="~/img/user-icon.png" style="max-width:200px;" class="rounded-circle mt-3 mb-3" />
+                </a>
+            }
+            else
+            {
+                <a href="~/Guia/Create" style="text-decoration:none">
+                    <img src="~/Upload/@guia.Foto?@DateTime.Now.ToString("yyyyMMddHHmmss")" style="max-width:200px;" class="rounded-circle mt-3 mb-3" />
+                </a>
+            }
+
+        </div>
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+
+                <h3>@guia.Nome</h3>
+
+            </div>
+        </div>
+        <!--AVALIAÇÕES-->
+        <div class="col-12 row avaliacao">
+            <div class="col-10">
+                <a href="javascript:void(0)" onclick="Avaliar(1)">
+                    <img src="../../img/avaliacao/star0.png" id="s1" class="star">
+                </a>
+
+                <a href="javascript:void(0)" onclick="Avaliar(2)">
+                    <img src="../../img/avaliacao/star0.png" id="s2" class="star">
+                </a>
+
+                <a href="javascript:void(0)" onclick="Avaliar(3)">
+                    <img src="../../img/avaliacao/star0.png" id="s3" class="star">
+                </a>
+
+                <a href="javascript:void(0)" onclick="Avaliar(4)">
+                    <img src="../../img/avaliacao/star0.png" id="s4" class="star">
+                </a>
+
+                <a href="javascript:void(0)" onclick="Avaliar(5)">
+                    <img src="../../img/avaliacao/star0.png" id="s5" class="star">
+                </a>
+            </div>
+            <div class="col-2 mt-1">
+                <p id="rating">0</p>
+            </div>
+        </div>
+
+        <ul>
+            <li><a href="~/Guia/Pontos">Pontos turísticos</a></li>
+            <li><a href="~/Guia/Passeios">Passeios</a></li>
+            <li><a href="~/Guia/Sair">Sair</a></li>
+        </ul>
+    </div>
+</body>
+<div>
+    @Html.ActionLink("Voltar", "Passeios")
+</div>

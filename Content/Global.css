@@ -1,0 +1,38 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --white: #FFFF;
+    --background: #e9ecef;
+    --gray-100: #e1e1e6;
+    --gray-300: #a8a8b3;
+    --gray-800: #29292e;
+    --gray-850: #1f2729;
+    --gray-900: #121214;
+    --preto: #161616;
+    --verde: #1FBFA2;
+    --laranja: #f47521;
+    --laranjaLight: #fab818;
+    --laranjaOpacity: rgba(223,99,0,.85);
+}
+
+body {
+}
+
+body, input, textarea, select, button {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+}
